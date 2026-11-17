@@ -25,7 +25,7 @@ jobs:
         run: ./mvnw -B -Pmutation test
       - name: Keep report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mutation-report
           path: target/pit-reports
