@@ -8,8 +8,6 @@ Small desktop app for writing German e-invoices in the ZUGFeRD format (EN 16931)
 company and the customer, add line items, and the app produces a validated PDF/A-3 with the invoice XML
 embedded. Runs locally on macOS and Windows, without a server or an account.
 
-"E-Rechnung Mini" is a working title.
-
 ## Features
 
 - Several issuing companies, each with its own logo, footer data, number range and output folder
