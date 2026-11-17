@@ -9,6 +9,8 @@ the notes of the new version.
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-11-17
+
 ### Added
 
 - Create ZUGFeRD invoices (EN 16931) as PDF/A-3 with embedded XML, with a live preview.
