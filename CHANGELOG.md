@@ -9,6 +9,8 @@ the notes of the new version.
 
 ## [Unreleased]
 
+## [0.9.1] - 2026-11-17
+
 ### Changed
 
 - Updated the user interface theme (AtlantaFX 3) and the build tools.
