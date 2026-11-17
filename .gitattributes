@@ -1,0 +1,8 @@
+# Shell scripts need LF, Windows command files CRLF, whatever the platform of the checkout.
+* text=auto
+mvnw text eol=lf
+*.cmd text eol=crlf
+*.png binary
+*.icns binary
+*.ico binary
+*.ttf binary

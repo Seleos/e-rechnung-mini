@@ -1,0 +1,21 @@
+# Weekly pull requests for outdated libraries, build plugins and workflow actions.
+# Security alerts for vulnerable libraries are enabled in the repository settings under "Code security".
+version: 2
+updates:
+  - package-ecosystem: maven
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "build(deps)"
+    groups:
+      javafx:
+        patterns: ["org.openjfx:*"]
+      mustang:
+        patterns: ["org.mustangproject:*"]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "ci(deps)"

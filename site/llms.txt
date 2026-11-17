@@ -1,0 +1,32 @@
+# E-Rechnung Mini
+
+> Kostenlose Open-Source-App für macOS und Windows, mit der kleine Unternehmen und Selbstständige in Deutschland E-Rechnungen im Format ZUGFeRD (EN 16931) lokal erstellen. Herausgeber ist die Seleos GmbH.
+
+E-Rechnung Mini erzeugt aus Firma, Kunde und Positionen ein PDF/A-3 mit eingebetteten Rechnungsdaten (CII-XML). Jede Rechnung wird vor dem Speichern geprüft. Die App läuft ohne Server, ohne Konto und ohne Cloud, alle Daten bleiben als Dateien auf dem eigenen Rechner.
+
+## Funktionen
+
+- ZUGFeRD-Rechnungen im Profil EN 16931 mit Vorschau während der Eingabe
+- Prüfung von PDF/A-3, XML-Schema und den Geschäftsregeln der Norm vor dem Speichern
+- Mehrere Absenderfirmen mit eigenem Logo, eigener Fußzeile, eigenem Nummernkreis und Ausgangsordner
+- Kunden mit eigenen Leistungen und Verrechnungssätzen, Rechnungssprache Deutsch oder Englisch und eigener Währung
+- Steuerfälle: Inland 19 % und 7 %, Reverse Charge in der EU, Drittland, Kleinunternehmer nach § 19 UStG
+- Rechnungslayout nach DIN 5008 als austauschbares XSLT-Stylesheet
+- Platzhalter für Monat, Jahr und Datumsangaben in Leistungstexten und E-Mail-Vorlagen
+- Oberfläche in Deutsch und Englisch
+
+## Nicht enthalten
+
+- Versand von E-Mails, Buchhaltung, Empfang und Prüfung eingehender Rechnungen
+- Übermittlung über Peppol oder staatliche Plattformen
+- Steuerregeln anderer Länder
+
+## Technik und Lizenz
+
+- Java und JavaFX, Mustang für die Rechnungsdaten, Apache FOP für das PDF
+- Lizenz: Apache 2.0
+
+## Links
+
+- [Startseite](https://e-rechnung.seleos.de/): Überblick, Funktionen und Fristen der E-Rechnungspflicht in Deutschland
+- [Seleos GmbH](https://www.seleos.de/): Herausgeber, bindet E-Rechnungen auch in bestehende Software ein

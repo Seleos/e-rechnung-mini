@@ -1,0 +1,13 @@
+E-Rechnung Mini
+Copyright 2026 Seleos GmbH
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+It bundles the Liberation Sans fonts, licensed under the SIL Open Font License 1.1
+(see src/main/resources/einvoice/fonts/LICENSE-LiberationFonts.txt).
+
+The installers additionally contain third-party libraries. Two points on their licences:
+- veraPDF is offered under GPL 3.0 or MPL 2.0. This product uses it under the Mozilla Public License 2.0.
+- JavaFX is licensed under GPL 2.0 with the Classpath Exception.
+The build lists all of them with their licences in
+target/generated-sources/license/THIRD-PARTY.txt.

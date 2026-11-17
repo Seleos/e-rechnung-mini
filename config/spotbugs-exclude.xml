@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SpotBugs findings that are accepted on purpose. Keep this list short and explain every entry. -->
+<FindBugsFilter>
+    <!-- Model classes are plain data holders; handing out their lists and nested objects is intended. -->
+    <Match>
+        <Package name="einvoice.model"/>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+    </Match>
+    <!-- Services and UI classes keep the collaborators they are given; sharing them is the point. -->
+    <Match>
+        <Or>
+            <Package name="einvoice.service"/>
+            <Package name="einvoice.ui"/>
+        </Or>
+        <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
+    <!-- The transcoder exists only to hand the rendered image to its caller. -->
+    <Match>
+        <Class name="einvoice.core.LogoImage$InMemoryTranscoder"/>
+        <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
+</FindBugsFilter>

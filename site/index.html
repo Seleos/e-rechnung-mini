@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://e-rechnung.seleos.de/">
+<meta property="og:title" content="E-Rechnung Mini – ZUGFeRD-Rechnungen lokal schreiben">
+<meta property="og:description" content="Kostenlose Open-Source-App für macOS und Windows. ZUGFeRD-Rechnungen lokal erstellen, automatisch geprüft, ohne Konto und ohne Cloud.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://e-rechnung.seleos.de/">
+<meta property="og:image" content="https://e-rechnung.seleos.de/assets/app-rechnung.png">
+<link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<title>E-Rechnung Mini – ZUGFeRD-Rechnungen lokal schreiben</title>
+<meta name="description" content="Kostenlose Open-Source-App für macOS und Windows: ZUGFeRD-Rechnungen (EN 16931) lokal erstellen, automatisch geprüft, ohne Konto und ohne Cloud.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "E-Rechnung Mini",
+  "description": "Kostenlose Open-Source-App für macOS und Windows. ZUGFeRD-Rechnungen (EN 16931) lokal erstellen, automatisch geprüft, ohne Konto und ohne Cloud.",
+  "url": "https://e-rechnung.seleos.de/",
+  "image": "https://e-rechnung.seleos.de/assets/app-rechnung.png",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "macOS, Windows",
+  "inLanguage": [
+    "de",
+    "en"
+  ],
+  "isAccessibleForFree": true,
+  "license": "https://www.apache.org/licenses/LICENSE-2.0",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "EUR"
+  },
+  "featureList": [
+    "ZUGFeRD-Rechnungen im Profil EN 16931",
+    "Prüfung von PDF/A-3, XML-Schema und Geschäftsregeln vor dem Speichern",
+    "Mehrere Absenderfirmen mit eigenem Logo und Nummernkreis",
+    "Leistungen und Verrechnungssätze pro Kunde",
+    "Rechnungssprache Deutsch oder Englisch",
+    "Rechnungslayout nach DIN 5008"
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Seleos GmbH",
+    "url": "https://www.seleos.de/"
+  }
+}
+</script>
+<style>
+  :root {
+    --ground: #f6f7f9;
+    --surface: #ffffff;
+    --ink: #171a21;
+    --muted: #4a5162;
+    --line: #dfe2e8;
+    --accent: #1265ea;
+    --accent-ink: #ffffff;
+    --accent-soft: #e8edfb;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #111318;
+      --surface: #1a1d24;
+      --ink: #eef0f4;
+      --muted: #a9b0bf;
+      --line: #2c313b;
+      --accent: #7da2ff;
+      --accent-ink: #0c1220;
+      --accent-soft: #1c2740;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  a { color: var(--accent); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+  header.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 0; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -0.01em;
+    text-decoration: none; color: var(--ink); }
+  .brand small { font-weight: 400; color: var(--muted); }
+  nav a { margin-left: 20px; text-decoration: none; color: var(--muted); }
+  nav a:hover { color: var(--ink); }
+  .hero { padding: 56px 0 40px; }
+  h1 { font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.12; letter-spacing: -0.02em; margin: 0 0 20px; max-width: 18ch; }
+  .lead { font-size: 1.2rem; color: var(--muted); max-width: 58ch; margin: 0 0 28px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .button {
+    display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; border-radius: 10px;
+    background: var(--accent); color: var(--accent-ink); font-weight: 600; text-decoration: none;
+  }
+  .button.secondary { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+  .note { color: var(--muted); font-size: 0.95rem; margin-top: 14px; }
+  .shot { margin: 8px 0 0; }
+  .shot img {
+    display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line);
+    box-shadow: 0 24px 60px rgba(23, 26, 33, 0.14);
+  }
+  .shot figcaption { color: var(--muted); font-size: 0.95rem; margin-top: 12px; }
+  section { padding: 56px 0; border-top: 1px solid var(--line); }
+  h2 { font-size: 1.7rem; letter-spacing: -0.01em; margin: 0 0 24px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 22px; }
+  .card h3 { margin: 0 0 8px; font-size: 1.08rem; }
+  .card p { margin: 0; color: var(--muted); }
+  ol.steps { list-style: none; counter-reset: step; padding: 0; margin: 0; display: grid; gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  ol.steps li { counter-increment: step; background: var(--surface); border: 1px solid var(--line);
+    border-radius: 12px; padding: 22px; }
+  ol.steps li::before {
+    content: counter(step); display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 50%; background: var(--accent-soft); color: var(--accent);
+    font-weight: 700; margin-bottom: 12px;
+  }
+  ol.steps strong { display: block; margin-bottom: 6px; }
+  ol.steps span { color: var(--muted); }
+  .facts { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; min-width: 520px; background: var(--surface);
+    border: 1px solid var(--line); border-radius: 12px; }
+  th, td { text-align: left; padding: 14px 18px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  td:first-child { white-space: nowrap; }
+  th { font-size: 0.9rem; color: var(--muted); font-weight: 600; }
+  .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; align-items: start; }
+  .two p { margin: 0 0 14px; }
+  .small { color: var(--muted); font-size: 0.95rem; }
+  footer { border-top: 1px solid var(--line); padding: 28px 0 48px; color: var(--muted); font-size: 0.95rem;
+    display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+  footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <a class="brand" href="/"><img src="assets/icon.svg" width="36" height="36" alt=""> E-Rechnung Mini <small>von Seleos</small></a>
+    <nav aria-label="Seitennavigation">
+      <a href="#funktionen">Funktionen</a>
+      <a href="#pflicht">E-Rechnungspflicht</a>
+      <a href="#seleos">Seleos</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h1>ZUGFeRD-Rechnungen schreiben, lokal auf dem eigenen Rechner.</h1>
+      <p class="lead">Firma und Kunde wählen, Positionen eintragen, fertig. Die App erzeugt eine geprüfte E-Rechnung als PDF mit eingebetteten Rechnungsdaten. Kostenlos, Open Source, ohne Konto und ohne Cloud.</p>
+      <div class="actions">
+        <a class="button" href="https://github.com/Seleos/e-rechnung-mini">Auf GitHub ansehen</a>
+        <a class="button secondary" href="#funktionen">Was die App kann</a>
+      </div>
+      <p class="note">Für macOS und Windows. Installationspakete gibt es auf GitHub unter „Releases“.</p>
+    </div>
+
+    <figure class="shot">
+      <img src="assets/app-rechnung.png" width="1440" height="900" fetchpriority="high" decoding="async"
+           alt="Fenster der App: links die Eingabe von Kunde, Leistungszeitraum und Positionen mit Summen, rechts die Vorschau der fertigen Rechnung.">
+      <figcaption>Links eingeben, rechts mitlesen: Die Vorschau zeigt die Rechnung so, wie sie gespeichert wird.</figcaption>
+    </figure>
+
+    <section id="funktionen">
+      <h2>Was die App kann</h2>
+      <div class="grid">
+        <div class="card"><h3>Geprüfte E-Rechnung</h3><p>Jede Rechnung wird vor dem Speichern geprüft: PDF/A-3, XML-Schema und die Regeln der Norm EN 16931. Was die Prüfung nicht besteht, wird nicht gespeichert.</p></div>
+        <div class="card"><h3>Mehrere Firmen</h3><p>Jede Absenderfirma hat ein eigenes Logo, eigene Fußzeile, eigenen Nummernkreis und eigenen Ausgangsordner.</p></div>
+        <div class="card"><h3>Sätze pro Kunde</h3><p>Leistungen und Verrechnungssätze hängen am Kunden. Vorbelegte Leistungen stehen in jeder neuen Rechnung schon drin, es fehlt nur noch die Menge.</p></div>
+        <div class="card"><h3>Steuerfälle</h3><p>Inland mit 19 % und 7 %, Reverse Charge in der EU, Drittland und Kleinunternehmer nach § 19 UStG, jeweils mit dem passenden Pflichthinweis.</p></div>
+        <div class="card"><h3>Deutsch oder Englisch</h3><p>Rechnungssprache und Währung werden am Kunden eingestellt. Beschriftungen, Datum und Pflichthinweise folgen der Sprache.</p></div>
+        <div class="card"><h3>E-Mail-Text zum Kopieren</h3><p>Betreff und Text pro Kunde mit Platzhaltern für Monat, Jahr und Signatur. Nach dem Erstellen in das eigene Mailprogramm einfügen und die Rechnung anhängen.</p></div>
+        <div class="card"><h3>Eigenes Layout</h3><p>Das Rechnungslayout ist ein XSLT-Stylesheet. Eine Kopie pro Firma lässt sich frei anpassen.</p></div>
+        <div class="card"><h3>Daten bleiben bei Ihnen</h3><p>Firmen, Kunden und Rechnungen liegen als lesbare Dateien in einem Ordner Ihrer Wahl. Es gibt keinen Server und keine Anmeldung.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>So entsteht die Rechnung</h2>
+      <ol class="steps">
+        <li><strong>Rechnungsdaten</strong><span>Aus Ihren Eingaben entsteht die strukturierte Rechnung als XML.</span></li>
+        <li><strong>Sichtbares PDF</strong><span>Das Stylesheet erzeugt aus genau dieser XML die Rechnung zum Lesen.</span></li>
+        <li><strong>Eine Datei</strong><span>Die XML wird in das PDF eingebettet und das Ergebnis geprüft.</span></li>
+      </ol>
+      <p class="note">Weil das PDF aus der XML entsteht, können sichtbare Rechnung und Rechnungsdaten nicht voneinander abweichen.</p>
+    </section>
+
+    <section id="pflicht">
+      <h2>E-Rechnungspflicht in Deutschland</h2>
+      <div class="facts">
+        <table>
+          <thead><tr><th scope="col">Ab</th><th scope="col">Was gilt</th></tr></thead>
+          <tbody>
+            <tr><td>1.&nbsp;Januar 2025</td><td>Alle Unternehmen müssen E-Rechnungen empfangen können.</td></tr>
+            <tr><td>1.&nbsp;Januar 2027</td><td>Unternehmen mit mehr als 800.000&nbsp;€ Vorjahresumsatz müssen an inländische Unternehmen E-Rechnungen ausstellen.</td></tr>
+            <tr><td>1.&nbsp;Januar 2028</td><td>Die Pflicht zum Ausstellen gilt für alle Unternehmen. Ausgenommen sind unter anderem Rechnungen bis 250&nbsp;€ und Kleinunternehmer.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Stand November 2026, ohne Gewähr. Diese Seite und die App sind keine Steuer- oder Rechtsberatung.</p>
+    </section>
+
+    <section id="seleos">
+      <div class="two">
+        <div>
+          <h2>Open Source von Seleos</h2>
+          <p>E-Rechnung Mini ist ein Open-Source-Projekt von Seleos. Wir wollten ein Werkzeug, das E-Rechnungen ohne Abo und ohne Cloud erzeugt. Es steht unter der Apache-2.0-Lizenz. Fehlerberichte und Beiträge sind willkommen.</p>
+          <p class="small">Technik: Java, JavaFX, Mustang und Apache FOP.</p>
+        </div>
+        <div>
+          <h2>E-Rechnungen aus Ihrer Software</h2>
+          <p>Ihre Rechnungen entstehen in einer eigenen Anwendung oder Warenwirtschaft, die noch kein ZUGFeRD kann? Seleos bindet die E-Rechnung in bestehende Systeme ein.</p>
+          <p><a href="https://www.seleos.de/#contact">Kontakt aufnehmen</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>E-Rechnung Mini ist ein Arbeitstitel.</span>
+    <span><a href="https://www.seleos.de/impressum.html">Impressum</a> · <a href="https://www.seleos.de/datenschutz.html">Datenschutz</a></span>
+  </footer>
+
+</div>
+</body>
+</html>

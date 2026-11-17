@@ -1,0 +1,53 @@
+# Slower checks that do not run on every push: mutation tests and a scan of all bundled libraries for
+# known vulnerabilities. Runs once a week and can be started by hand.
+name: Quality
+
+on:
+  schedule:
+    - cron: '17 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mutation-tests:
+    name: Mutation tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+      - name: Run mutation tests
+        run: ./mvnw -B -Pmutation test
+      - name: Keep report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mutation-report
+          path: target/pit-reports
+          if-no-files-found: ignore
+
+  vulnerability-scan:
+    name: Vulnerability scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+      # The bill of materials lists exactly what the installers contain.
+      - name: Build bill of materials
+        run: ./mvnw -B -DskipTests package
+      - name: Scan for known vulnerabilities
+        uses: anchore/scan-action@v6
+        with:
+          sbom: target/bom.json
+          fail-build: true
+          severity-cutoff: high
+          output-format: table

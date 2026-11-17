@@ -1,0 +1,65 @@
+/* App specific styles on top of the AtlantaFX theme. Colours come from the theme, so dark mode works. */
+
+.sidebar {
+    -fx-background-color: -color-bg-subtle;
+    -fx-border-color: -color-border-default;
+    -fx-border-width: 0 1 0 0;
+}
+
+.navigation-button {
+    -fx-alignment: center-left;
+    -fx-padding: 10 12 10 12;
+    -fx-background-radius: 8;
+}
+
+.navigation-button:selected {
+    -fx-background-color: -color-bg-default;
+    -fx-text-fill: -color-accent-fg;
+    -fx-font-weight: bold;
+}
+
+.page-scroll {
+    -fx-background-color: -color-bg-inset;
+}
+
+.page-scroll > .viewport {
+    -fx-background-color: -color-bg-inset;
+}
+
+.card {
+    -fx-background-color: -color-bg-default;
+    -fx-border-color: -color-border-default;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 20;
+}
+
+.paper {
+    -fx-background-color: white;
+    -fx-border-color: -color-border-default;
+    -fx-effect: dropshadow(gaussian, rgba(23, 26, 33, 0.12), 24, 0, 0, 8);
+}
+
+.problem-box:empty {
+    -fx-padding: 0;
+}
+
+.problem-box {
+    -fx-text-fill: -color-danger-fg;
+}
+
+.problem-box .label {
+    -fx-text-fill: -color-danger-fg;
+}
+
+.result-box {
+    -fx-background-color: -color-success-subtle;
+    -fx-border-color: -color-success-muted;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 16 20 16 20;
+}
+
+.amount-column {
+    -fx-alignment: center-right;
+}

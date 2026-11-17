@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!-- App icon: an E whose middle bar is doubled like the euro sign. Source for icon.icns, icon.ico and icon.png. -->
+  <rect x="100" y="100" width="824" height="824" rx="186" fill="#1265ea"/>
+  <g fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M660 292H424V732H660"/>
+    <path d="M348 478H606"/>
+    <path d="M348 546H606"/>
+  </g>
+</svg>

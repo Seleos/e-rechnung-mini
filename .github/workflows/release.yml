@@ -1,0 +1,124 @@
+# Releases a new version in one step: sets the version, tags it, builds the installers for macOS and
+# Windows and publishes them as a GitHub release.
+# Start it under Actions > Release > Run workflow and enter the version, for example 1.0.0.
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release, for example 0.9.0'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+env:
+  VERSION: ${{ inputs.version }}
+
+jobs:
+  version:
+    name: Set version ${{ inputs.version }}
+    runs-on: ubuntu-latest
+    steps:
+      # The input is passed through the environment, never pasted into a command line.
+      - name: Check version format
+        run: |
+          echo "$VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$' \
+            || { echo "The version must look like 1.0.0."; exit 1; }
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+      # The version lives in pom.xml only; the app, the installers and the file names read it from there.
+      - name: Write version into pom.xml
+        run: ./mvnw -B versions:set -DnewVersion=${{ inputs.version }} -DgenerateBackupPoms=false
+      - name: Verify
+        run: xvfb-run --auto-servernum ./mvnw -B verify
+      # The "Unreleased" section of the changelog becomes the section and the release notes of this version.
+      - name: Update changelog
+        run: |
+          sed -i "s/^## \\[Unreleased\\]$/## [Unreleased]\n\n## [${{ inputs.version }}] - $(date +%F)/" CHANGELOG.md
+          awk -v section="## [${{ inputs.version }}]" \
+            'index($0, section) == 1 { inside = 1; next } /^## \[/ { inside = 0 } inside' CHANGELOG.md > release-notes.md
+          grep -q '[^[:space:]]' release-notes.md || { echo "CHANGELOG.md has no entries under Unreleased."; exit 1; }
+      - name: Commit and tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(release): ${{ inputs.version }}" pom.xml CHANGELOG.md
+          git tag "v${{ inputs.version }}"
+          git push --atomic origin HEAD "v${{ inputs.version }}"
+      # A draft, so nobody sees a release without installers if a later job fails.
+      - name: Create draft release with notes
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ inputs.version }}
+          body_path: release-notes.md
+          draft: true
+
+  installer:
+    name: Installer for ${{ matrix.name }}
+    needs: version
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: macos-latest, name: macos-apple-silicon }
+          - { os: macos-15-intel, name: macos-intel }
+          - { os: windows-latest, name: windows }
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: v${{ inputs.version }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+      - name: Build installer
+        run: ./mvnw -B -Pdist -DskipTests package
+      # The two macOS installers would otherwise have the same file name. Spaces are replaced for easy links.
+      - name: Name files after the platform
+        shell: bash
+        run: |
+          cd target/dist
+          for file in *.dmg *.msi; do
+            [ -e "$file" ] || continue
+            base="${file%.*}"
+            mv "$file" "$(echo "$base" | tr ' ' '-')-${{ matrix.name }}.${file##*.}"
+          done
+          cp ../bom.json "sbom-${{ matrix.name }}.cdx.json"
+      # Checksums let users verify that a download is complete and unchanged.
+      - name: Write checksums
+        shell: bash
+        run: |
+          cd target/dist
+          for file in *.dmg *.msi; do
+            [ -e "$file" ] || continue
+            if command -v sha256sum > /dev/null; then sha256sum "$file"; else shasum -a 256 "$file"; fi > "$file.sha256"
+          done
+      - name: Attach installers to the release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ inputs.version }}
+          draft: true
+          files: |
+            target/dist/*.dmg
+            target/dist/*.msi
+            target/dist/*.sha256
+            target/dist/*.cdx.json
+
+  publish:
+    name: Publish release
+    needs: installer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish the draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release edit "v$VERSION" --repo "${{ github.repository }}" --draft=false
