@@ -8,6 +8,10 @@ updates:
       interval: weekly
     commit-message:
       prefix: "build(deps)"
+    ignore:
+      # Mustang brings its own Apache FOP. Updating FOP on its own would mix two versions,
+      # so it is only raised together with Mustang.
+      - dependency-name: "org.apache.xmlgraphics:fop"
     groups:
       javafx:
         patterns: ["org.openjfx:*"]
