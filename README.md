@@ -93,6 +93,11 @@ example `1.0.0`. It writes the version into `pom.xml`, runs all checks, turns th
 the changelog into the release notes, tags the commit, builds the installers for macOS (Apple silicon and
 Intel) and Windows and publishes them with checksums and a bill of materials as a GitHub release.
 
+If an installer job fails, fix the cause and start the workflow again with the same version and
+"installers_only" ticked. That rebuilds the installers from the existing tag without touching the version.
+The installers are built with JDK 27, because the packaging tool of older JDKs refuses macOS versions that
+start with 0.
+
 The version is defined in `pom.xml` only. The app and the installer file names read it from there.
 
 The installers are not signed yet. Until they are, macOS and Windows warn on first start.
