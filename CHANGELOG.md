@@ -9,6 +9,11 @@ the notes of the new version.
 
 ## [Unreleased]
 
+### Fixed
+
+- The line under the sender's address above the recipient no longer runs through commas and letters with
+  descenders; it now sits just below the text.
+
 ## [0.10.0] - 2026-11-22
 
 ### Added

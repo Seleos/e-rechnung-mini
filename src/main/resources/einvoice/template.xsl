@@ -165,12 +165,16 @@
                     <!-- Return address: last line of the 17.7 mm zone above the address (45 to 62.7 mm from the top) -->
                     <fo:block-container absolute-position="absolute" top="4.5cm" left="2.5cm" width="8cm" height="1.77cm"
                                         display-align="after">
-                        <fo:block font-size="7pt" color="{$grey}" text-decoration="underline">
-                            <xsl:value-of select="$seller/ram:Name"/>
-                            <xsl:text>, </xsl:text>
-                            <xsl:value-of select="$seller/ram:PostalTradeAddress/ram:LineOne"/>
-                            <xsl:text>, </xsl:text>
-                            <xsl:value-of select="concat($seller/ram:PostalTradeAddress/ram:PostcodeCode,' ',$seller/ram:PostalTradeAddress/ram:CityName)"/>
+                        <!-- The padding keeps the rule inside the return address zone, clear of the recipient -->
+                        <fo:block font-size="7pt" color="{$grey}" padding-bottom="2pt">
+                            <!-- A rule below the descenders instead of an underline, which commas and descenders cross -->
+                            <fo:inline border-bottom="0.4pt solid {$grey}" padding-bottom="1pt">
+                                <xsl:value-of select="$seller/ram:Name"/>
+                                <xsl:text>, </xsl:text>
+                                <xsl:value-of select="$seller/ram:PostalTradeAddress/ram:LineOne"/>
+                                <xsl:text>, </xsl:text>
+                                <xsl:value-of select="concat($seller/ram:PostalTradeAddress/ram:PostcodeCode,' ',$seller/ram:PostalTradeAddress/ram:CityName)"/>
+                            </fo:inline>
                         </fo:block>
                     </fo:block-container>
 
