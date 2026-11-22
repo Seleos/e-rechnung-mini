@@ -39,6 +39,11 @@ final class InvoiceActionBar extends FlowPane {
         getChildren().add(button);
     }
 
+    /** Opens the PDF of the invoice, as the button does; does nothing for an invoice without a file. */
+    void openPdf() {
+        openFile(false);
+    }
+
     /** Greys all buttons out while the condition holds, for example while no invoice is selected. */
     void disableWhile(ObservableValue<Boolean> condition) {
         getChildren().forEach(button -> button.disableProperty().bind(condition));

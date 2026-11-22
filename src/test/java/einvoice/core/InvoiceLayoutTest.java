@@ -90,12 +90,14 @@ class InvoiceLayoutTest {
                     210 * POINTS_PER_MM, 32 * POINTS_PER_MM));
             stripper.addRegion("top", new Rectangle2D.Double(0, 0, 210 * POINTS_PER_MM, 97 * POINTS_PER_MM));
             stripper.extractRegions(detailed.getPage(0));
-            String footer = stripper.getTextForRegion("footer");
+            // A long e-mail address may wrap after the @ to stay inside its column.
+            String footer = stripper.getTextForRegion("footer").replaceAll("@\\s+", "@");
             String top = stripper.getTextForRegion("top");
 
             for (String expected : new String[] {"Geschäftsführung", "Erika Mustermann", "Amtsgericht Musterstadt",
-                "HRB 00000", "Musterbank", "DE36000000000000000000", "TESTDEFFXXX", "rechnung@musterfirma.example",
-                "www.musterfirma.example", "USt-IdNr. DE123456789", "Mitglied im Musterverband"}) {
+                "HRB 00000", "Musterbank", "DE36000000000000000000", "TESTDEFFXXX", "T: +49 30 0000000",
+                "rechnung@musterfirma.example", "www.musterfirma.example", "USt-IdNr. DE123456789",
+                "Mitglied im Musterverband"}) {
                 assertTrue(footer.contains(expected), expected + " is missing in the footer: " + footer);
             }
             for (String expected : new String[] {"Oktober 2026", "+49 30 0000000", "Erika Mustermann", "Frankreich",

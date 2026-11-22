@@ -21,10 +21,12 @@ import org.junit.jupiter.api.io.TempDir;
 
 import javax.imageio.ImageIO;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -169,6 +171,21 @@ class InvoiceGenerationTest {
         Files.delete(file);
         assertThrows(java.nio.file.FileAlreadyExistsException.class, () -> service.create(company, invoice));
         assertEquals(1, store.records(company).size());
+    }
+
+    @Test
+    void documentInformationNamesTheAppAndMatchesTheXmpMetadata() throws Exception {
+        byte[] pdf = service.build(company, TestData.invoice(TestData.domesticCustomer()));
+
+        try (PDDocument document = Loader.loadPDF(pdf)) {
+            String producer = AppInfo.name() + " " + AppInfo.version();
+            assertEquals(producer, document.getDocumentInformation().getProducer());
+            assertEquals(AppInfo.name(), document.getDocumentInformation().getCreator());
+            assertEquals(company.getName(), document.getDocumentInformation().getAuthor());
+            String xmp = new String(document.getDocumentCatalog().getMetadata().toByteArray(), StandardCharsets.UTF_8);
+            assertTrue(xmp.contains("<pdf:Producer>" + producer + "</pdf:Producer>"), xmp);
+            assertFalse(xmp.contains("${"), xmp);
+        }
     }
 
     private static void assertValid(String name, Company issuer, Customer customer) throws Exception {

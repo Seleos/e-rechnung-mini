@@ -16,6 +16,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.mustangproject.ZUGFeRD.IZUGFeRDExporter;
 import org.mustangproject.ZUGFeRD.Profiles;
+import org.mustangproject.ZUGFeRD.ZUGFeRDExporterFromA3;
 import org.mustangproject.ZUGFeRD.ZUGFeRDExporterFromPDFA;
 
 import javax.xml.transform.Templates;
@@ -88,7 +89,7 @@ public final class PdfBuilder {
         synchronized (RENDER_LOCK) {
             try (LibraryClassLoaderScope scope = LibraryClassLoaderScope.enter()) {
                 Transformer transformer = template(customTemplate).newTransformer();
-                transformer.setParameter("logo", logo == null ? "" : logo.toUri().toString());
+                transformer.setParameter("logo", LogoImage.layoutSource(logo));
                 transformer.setParameter("managingDirector", text(company.getManagingDirector()));
                 transformer.setParameter("registerCourt", text(company.getRegisterCourt()));
                 transformer.setParameter("registerNumber", text(company.getRegisterNumber()));
@@ -111,7 +112,7 @@ public final class PdfBuilder {
                 userAgent.setTitle(texts.get("label.invoiceTitle") + " " + invoice.getNumber());
                 userAgent.setAuthor(company.getName());
                 userAgent.setCreator(AppInfo.name());
-                userAgent.setProducer(AppInfo.name());
+                userAgent.setProducer(producer());
 
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 Fop fop = fopFactory().newFop(MimeConstants.MIME_PDF, userAgent, out);
@@ -135,13 +136,23 @@ public final class PdfBuilder {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try (LibraryClassLoaderScope scope = LibraryClassLoaderScope.enter();
              IZUGFeRDExporter exporter = new ZUGFeRDExporterFromPDFA().load(layoutPdf)) {
-            exporter.setProducer(AppInfo.name())
+            if (exporter instanceof ZUGFeRDExporterFromA3 fromPdfA) {
+                // Keeps the document information written while rendering. Otherwise the library replaces the
+                // producer with its own text, which carries an unresolved version placeholder in this release.
+                fromPdfA.setOverwrite(false);
+            }
+            exporter.setProducer(producer())
                     .setCreator(company.getName())
                     .setProfile(Profiles.getByName(XmlBuilder.PROFILE))
                     .setXML(xml);
             exporter.export(out);
         }
         return out.toByteArray();
+    }
+
+    /** Program and version that wrote the file, as recorded in the PDF metadata. */
+    private static String producer() {
+        return AppInfo.name() + " " + AppInfo.version();
     }
 
     /**

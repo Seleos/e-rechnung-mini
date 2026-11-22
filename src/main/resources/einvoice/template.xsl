@@ -41,6 +41,7 @@
     <xsl:param name="label.customerVatId" select="'Ihre USt-IdNr.'"/>
     <xsl:param name="label.contact" select="'Ansprechpartner'"/>
     <xsl:param name="label.phone" select="'Telefon'"/>
+    <xsl:param name="label.phoneShort" select="'T:'"/>
     <xsl:param name="label.page" select="'Seite'"/>
     <xsl:param name="label.position" select="'Pos'"/>
     <xsl:param name="label.quantity" select="'Menge'"/>
@@ -250,14 +251,15 @@
                     </fo:block>
                 </fo:static-content>
 
-                <!-- Footer: built from company master data, empty lines are omitted -->
+                <!-- Footer: built from company master data in five columns, empty lines are omitted -->
                 <fo:static-content flow-name="footer">
-                    <fo:block margin-left="2.5cm" margin-right="2cm" border-top="0.5pt solid #999999" padding-top="5pt">
+                    <fo:block margin-left="2.5cm" margin-right="2cm" padding-top="5pt">
                         <fo:table table-layout="fixed" width="100%" font-size="7pt" line-height="1.4" color="{$grey}">
                             <fo:table-column column-width="proportional-column-width(1)"/>
                             <fo:table-column column-width="proportional-column-width(1)"/>
-                            <fo:table-column column-width="proportional-column-width(1.15)"/>
-                            <fo:table-column column-width="proportional-column-width(1.15)"/>
+                            <fo:table-column column-width="proportional-column-width(1)"/>
+                            <fo:table-column column-width="proportional-column-width(1)"/>
+                            <fo:table-column column-width="proportional-column-width(1)"/>
                             <!-- Reset the indent inherited from the surrounding block, otherwise FOP shifts the cells -->
                             <fo:table-body start-indent="0pt" end-indent="0pt">
                                 <fo:table-row>
@@ -272,8 +274,6 @@
                                             <fo:block><xsl:value-of select="$label.managingDirector"/></fo:block>
                                         </xsl:if>
                                         <xsl:call-template name="line"><xsl:with-param name="text" select="$managingDirector"/></xsl:call-template>
-                                        <xsl:call-template name="line"><xsl:with-param name="text" select="$registerCourt"/></xsl:call-template>
-                                        <xsl:call-template name="line"><xsl:with-param name="text" select="$registerNumber"/></xsl:call-template>
                                     </fo:table-cell>
                                     <fo:table-cell>
                                         <fo:block/>
@@ -285,8 +285,17 @@
                                     </fo:table-cell>
                                     <fo:table-cell>
                                         <fo:block/>
-                                        <xsl:call-template name="line"><xsl:with-param name="text" select="$email"/></xsl:call-template>
+                                        <xsl:if test="$phone != ''">
+                                            <fo:block><xsl:value-of select="concat($label.phoneShort, ' ', $phone)"/></fo:block>
+                                        </xsl:if>
+                                        <!-- A zero-width space after the @ lets a long address wrap instead of running into the next column -->
+                                        <xsl:call-template name="line"><xsl:with-param name="text" select="replace($email, '@', '@&#x200B;')"/></xsl:call-template>
                                         <xsl:call-template name="line"><xsl:with-param name="text" select="$web"/></xsl:call-template>
+                                    </fo:table-cell>
+                                    <fo:table-cell>
+                                        <fo:block/>
+                                        <xsl:call-template name="line"><xsl:with-param name="text" select="$registerCourt"/></xsl:call-template>
+                                        <xsl:call-template name="line"><xsl:with-param name="text" select="$registerNumber"/></xsl:call-template>
                                         <xsl:if test="$vatId != ''">
                                             <fo:block><xsl:value-of select="concat($label.vatId, ' ', $vatId)"/></fo:block>
                                         </xsl:if>

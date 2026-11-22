@@ -9,6 +9,26 @@ the notes of the new version.
 
 ## [Unreleased]
 
+### Added
+
+- Command line for recurring invoices, with commands in the form `<entity> <action>`: `invoice create` copies
+  an earlier invoice (`--from`) or starts from a customer's pre-filled services (`--customer`), with the next
+  number, the previous month as service period and the same validation as in the window. `invoice list`,
+  `customer list` and `company list` show what is available, `--dry-run` shows an invoice without saving it.
+
+### Changed
+
+- The invoice footer has five columns, as in a classic business letter: company, managing director, bank,
+  phone/e-mail/website and register court/number with VAT ID. The phone number is now printed there too.
+- The invoice list can be sorted by every column: number, date, customer, net and gross amount. A double click on
+  an invoice opens its PDF.
+
+### Fixed
+
+- SVG logos without their own width and height were drawn far too small; they now keep their size.
+- The PDF properties named the producer as "E-Rechnung Mini (via mustangproject.org ${project.version})"; they now
+  show the app with its version, the same in all metadata of the file.
+
 ## [0.9.1] - 2026-11-17
 
 ### Changed

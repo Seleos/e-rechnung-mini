@@ -25,6 +25,7 @@ embedded. Runs locally on macOS and Windows, without a server or an account.
   per company
 - Data stored as readable JSON files in a folder of your choice
 - User interface in German and English, switchable in the settings. Further languages are one file each
+- Command line for recurring invoices: copy an earlier invoice or start from a customer's services
 
 Not included: sending e-mails, time tracker import, cancellation invoices and saving drafts.
 
@@ -38,6 +39,46 @@ Requires JDK 25 or newer.
 
 On first start the app creates a fictitious example company in `Documents/E-Rechnung Mini`. The data
 folder can be changed under Einstellungen › Ordner.
+
+## Command line
+
+Started with a command, the app runs in the terminal instead of opening its window. It uses the same data
+folder, language, number range and validation as the user interface.
+
+```
+"/Applications/E-Rechnung Mini.app/Contents/MacOS/E-Rechnung Mini" help
+./mvnw -q compile exec:java -Dexec.args="help"          # from the source code
+```
+
+The examples below assume an alias, for example in `~/.zshrc`:
+`alias e-rechnung='"/Applications/E-Rechnung Mini.app/Contents/MacOS/E-Rechnung Mini"'`.
+
+Commands follow the pattern `<entity> <action>`:
+
+| Command          | Purpose                                                          |
+|------------------|------------------------------------------------------------------|
+| `company list`   | List the companies with the id `--company` expects               |
+| `customer list`  | List the customers of a company with tax case and services       |
+| `invoice list`   | List the invoices created with the app (`--year`, `--customer`)  |
+| `invoice create` | Create an invoice from `--from <number>` or `--customer <id>`    |
+| `help`           | Show all commands, options and examples                          |
+
+`--company` may be left out when the data folder holds only one company. `invoice create` assigns the next
+number, uses today as invoice date and the previous month as service period unless `--date`, `--period` or
+`--service-from`/`--service-to` say otherwise. `--qty`, `--price`, `--text` and `--unit` change the line items
+in order, `--item "text;quantity;unit;price"` replaces them, and `--dry-run` shows the invoice without
+saving it.
+
+```
+e-rechnung invoice list --company musterfirma-gmbh --year 2026
+e-rechnung invoice create --company musterfirma-gmbh --from RE-2026-00042 --qty 6,75 --dry-run
+e-rechnung invoice create --customer beispielkunde-gmbh --text "Wartung der Website" --qty 1 --price 240
+```
+
+Only invoices created with the app can serve as a template, because only they have a record with their
+data. The exit code is 0 on success, 1 if the invoice is incomplete or fails validation, and 2 for wrong
+arguments. The Windows installer starts the app without a console, so there the command line is used from
+the source code.
 
 ## Build, test, lint
 

@@ -6,10 +6,12 @@
         <Package name="einvoice.model"/>
         <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
     </Match>
-    <!-- Services and UI classes keep the collaborators they are given; sharing them is the point. -->
+    <!-- Services, the command line and UI classes keep the collaborators they are given, such as the data
+         folder or the output streams; sharing them is the point. -->
     <Match>
         <Or>
             <Package name="einvoice.service"/>
+            <Package name="einvoice.cli"/>
             <Package name="einvoice.ui"/>
         </Or>
         <Bug pattern="EI_EXPOSE_REP2"/>

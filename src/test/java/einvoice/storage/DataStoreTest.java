@@ -255,6 +255,17 @@ class DataStoreTest {
     }
 
     @Test
+    void recordIsFoundByItsNumberOnly() {
+        InvoiceData record = TestData.invoice(TestData.domesticCustomer());
+        store.saveRecord(company, record);
+
+        assertEquals("Beispielkunde GmbH",
+                store.record(company, "RE-2026-00043").orElseThrow().getCustomer().getName());
+        assertTrue(store.record(company, "RE-2026-00044").isEmpty());
+        assertTrue(store.record(company, "../records/RE-2026-00043").isEmpty());
+    }
+
+    @Test
     void outputFolderDefaultsToTheCompanyFolderAndReplacesTheYear() {
         assertEquals(store.companyDir(company).resolve("invoices").resolve("2026"), store.outputDir(company, 2026));
 

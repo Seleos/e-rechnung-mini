@@ -35,9 +35,10 @@ Rules for everyone working on this code base, human or AI agent.
 
 ## Architecture
 
-Dependencies point in one direction only: `ui` → `service` → `core` and `storage` → `model`. The user
-interface may call `core` and `storage` directly for calculations, formatting and simple reads and writes;
-everything that creates or changes an invoice goes through `service`.
+Dependencies point in one direction only: `ui` and `cli` → `service` → `core` and `storage` → `model`. The
+user interface and the command line may call `core` and `storage` directly for calculations, formatting and
+simple reads and writes; everything that creates or changes an invoice goes through `service`. `ui` and `cli`
+do not depend on each other.
 
 | Package            | Responsibility                                                        |
 |--------------------|-----------------------------------------------------------------------|
@@ -48,6 +49,7 @@ everything that creates or changes an invoice goes through `service`.
 | `einvoice.storage` | Reading and writing the data folder                                   |
 | `einvoice.service` | Use cases that combine core and storage                               |
 | `einvoice.ui`      | JavaFX user interface, no business logic                              |
+| `einvoice.cli`     | Command line: parses arguments and prints results, no business logic  |
 
 - The invoice XML is the single source of truth. The visible PDF is rendered from it via the stylesheet
   (`template.xsl`); never compute amounts a second time for the layout.
@@ -107,6 +109,7 @@ Commits follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.
   | `storage`  | Data folder and settings of the installation                       |
   | `service`  | Use cases that combine core and storage                            |
   | `ui`       | JavaFX user interface                                              |
+  | `cli`      | Command line                                                       |
   | `i18n`     | Languages and translated texts                                     |
   | `template` | Invoice layout (`template.xsl`)                                    |
   | `site`     | Landing page                                                       |

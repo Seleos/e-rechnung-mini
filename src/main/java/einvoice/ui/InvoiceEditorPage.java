@@ -11,12 +11,14 @@ import einvoice.model.Customer;
 import einvoice.model.InvoiceData;
 import einvoice.model.LineItem;
 import einvoice.model.Service;
+import einvoice.service.InvoiceDrafts;
 import einvoice.service.InvoiceService.InvalidInvoiceException;
 
 import java.math.BigDecimal;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Platform;
@@ -135,10 +137,10 @@ final class InvoiceEditorPage extends Page {
     void startNewInvoice() {
         loading = true;
         LocalDate today = LocalDate.now();
-        LocalDate lastMonth = today.minusMonths(1);
+        YearMonth serviceMonth = InvoiceDrafts.defaultServiceMonth(today);
         date.setValue(today);
-        serviceFrom.setValue(lastMonth.withDayOfMonth(1));
-        serviceTo.setValue(lastMonth.withDayOfMonth(lastMonth.lengthOfMonth()));
+        serviceFrom.setValue(serviceMonth.atDay(1));
+        serviceTo.setValue(serviceMonth.atEndOfMonth());
         rows.getChildren().clear();
         showResult(null);
         problems.getChildren().clear();
@@ -299,14 +301,7 @@ final class InvoiceEditorPage extends Page {
      * quantity, or one empty line if there are none.
      */
     private static List<LineItem> defaultLines(Customer selected) {
-        List<LineItem> lines = new ArrayList<>();
-        if (selected != null) {
-            for (Service service : selected.getServices()) {
-                if (service.isIncludedByDefault()) {
-                    lines.add(new LineItem(null, service.getUnit(), service.getText(), service.getUnitPrice()));
-                }
-            }
-        }
+        List<LineItem> lines = InvoiceDrafts.defaultLines(selected);
         if (lines.isEmpty()) {
             lines.add(new LineItem(null, "h", "", BigDecimal.ZERO));
         }

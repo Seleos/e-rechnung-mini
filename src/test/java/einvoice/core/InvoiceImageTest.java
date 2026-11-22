@@ -53,15 +53,22 @@ class InvoiceImageTest {
         assertMatchesReference("invoice-en-usd", customer);
     }
 
+    @Test
+    void svgLogoWithoutSizeIsDrawnAtTheSizeOfItsViewBox() throws Exception {
+        String sample = Files.readString(sampleLogo());
+        Path sized = Files.writeString(logoDir.resolve("sized.svg"),
+                sample.replaceFirst(" width=\"181\" height=\"60\"", " width=\"181\" height=\"48\""));
+        Path unsized = Files.writeString(logoDir.resolve("unsized.svg"),
+                sample.replaceFirst(" width=\"181\" height=\"60\"", ""));
+
+        BufferedImage expected = render(TestData.domesticCustomer(), sized);
+        BufferedImage actual = render(TestData.domesticCustomer(), unsized);
+
+        assertEquals(0.0, changedShare(expected, actual));
+    }
+
     private void assertMatchesReference(String name, Customer customer) throws Exception {
-        Company company = TestData.company();
-        company.setManagingDirector("Erika Mustermann");
-        company.setRegisterCourt("Amtsgericht Musterstadt");
-        company.setWeb("www.musterfirma.example");
-        InvoiceData invoice = TestData.invoice(customer);
-        byte[] xml = XmlBuilder.xml(company, invoice);
-        BufferedImage actual = PdfBuilder.renderFirstPage(
-                PdfBuilder.renderLayout(company, invoice, xml, sampleLogo(), null), DPI);
+        BufferedImage actual = render(customer, sampleLogo());
 
         Path reference = REFERENCES.resolve(name + ".png");
         if (UPDATE || !Files.exists(reference)) {
@@ -83,6 +90,16 @@ class InvoiceImageTest {
             fail(String.format("%s differs from its reference in %.2f %% of the pixels. Compare %s with %s.",
                     name, changedShare * 100, actualFile, reference));
         }
+    }
+
+    private static BufferedImage render(Customer customer, Path logo) throws Exception {
+        Company company = TestData.company();
+        company.setManagingDirector("Erika Mustermann");
+        company.setRegisterCourt("Amtsgericht Musterstadt");
+        company.setWeb("www.musterfirma.example");
+        InvoiceData invoice = TestData.invoice(customer);
+        byte[] xml = XmlBuilder.xml(company, invoice);
+        return PdfBuilder.renderFirstPage(PdfBuilder.renderLayout(company, invoice, xml, logo, null), DPI);
     }
 
     private static double changedShare(BufferedImage expected, BufferedImage actual) {

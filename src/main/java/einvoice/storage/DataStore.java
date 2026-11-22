@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -231,6 +232,18 @@ public final class DataStore {
         List<InvoiceData> records = readAll(companyDir(company).resolve("records"), InvoiceData.class);
         records.sort(Comparator.comparing((InvoiceData record) -> record.getNumber()).reversed());
         return records;
+    }
+
+    /**
+     * Finds the record of one invoice.
+     *
+     * @param company a saved company
+     * @param number  invoice number
+     * @return the record, or empty if no invoice with this number was created for the company
+     */
+    public Optional<InvoiceData> record(Company company, String number) {
+        // Searched among the loaded records instead of resolving a path, so a number can never point outside.
+        return records(company).stream().filter(record -> record.getNumber().equals(number)).findFirst();
     }
 
     /**
