@@ -9,6 +9,8 @@ the notes of the new version.
 
 ## [Unreleased]
 
+## [0.10.1] - 2026-11-22
+
 ### Fixed
 
 - The line under the sender's address above the recipient no longer runs through commas and letters with

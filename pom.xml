@@ -6,7 +6,7 @@
 
     <groupId>einvoice</groupId>
     <artifactId>einvoice-mini</artifactId>
-    <version>0.10.0</version>
+    <version>0.10.1</version>
     <name>E-Rechnung Mini</name>
     <description>Small desktop app for creating ZUGFeRD e-invoices (EN 16931)</description>
 
