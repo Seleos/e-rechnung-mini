@@ -9,6 +9,8 @@ the notes of the new version.
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-11-22
+
 ### Added
 
 - Command line for recurring invoices, with commands in the form `<entity> <action>`: `invoice create` copies
