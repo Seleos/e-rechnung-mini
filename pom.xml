@@ -67,7 +67,7 @@
             <!-- Official EN 16931 rule files, used by a test as a validator independent of Mustang -->
             <groupId>com.helger.phive.rules</groupId>
             <artifactId>phive-rules-en16931</artifactId>
-            <version>4.7.0</version>
+            <version>4.7.1</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
