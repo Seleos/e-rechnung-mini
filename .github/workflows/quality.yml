@@ -45,7 +45,7 @@ jobs:
       - name: Build bill of materials
         run: ./mvnw -B -DskipTests package
       - name: Scan for known vulnerabilities
-        uses: anchore/scan-action@v6
+        uses: anchore/scan-action@v7
         with:
           sbom: target/bom.json
           fail-build: true
