@@ -60,7 +60,7 @@ jobs:
           git push --atomic origin HEAD "v${{ inputs.version }}"
       # A draft, so nobody sees a release without installers if a later job fails.
       - name: Create draft release with notes
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: v${{ inputs.version }}
           body_path: release-notes.md
@@ -114,7 +114,7 @@ jobs:
             if command -v sha256sum > /dev/null; then sha256sum "$file"; else shasum -a 256 "$file"; fi > "$file.sha256"
           done
       - name: Attach installers to the release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: v${{ inputs.version }}
           draft: true
